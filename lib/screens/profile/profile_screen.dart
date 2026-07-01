@@ -31,6 +31,7 @@ class ProfileScreen extends StatelessWidget {
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
+              padding: const EdgeInsets.only(bottom: 120), // Added bottom padding for nav bar
               child: Column(
                 children: [
                   const SizedBox(height: 20),

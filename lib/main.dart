@@ -6,7 +6,7 @@ import 'core/theme/app_theme.dart';
 import 'providers/auth_provider.dart';
 import 'providers/quiz_provider.dart';
 import 'screens/login/login_screen.dart';
-import 'screens/home/home_screen.dart';
+import 'screens/main_navigation_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -84,7 +84,7 @@ class AuthWrapper extends StatelessWidget {
     }
 
     if (authProvider.isAuthenticated) {
-      return const HomeScreen();
+      return const MainNavigationScreen();
     } else {
       return const LoginScreen();
     }

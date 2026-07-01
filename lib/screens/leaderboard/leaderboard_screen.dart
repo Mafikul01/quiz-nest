@@ -81,7 +81,7 @@ class LeaderboardScreen extends StatelessWidget {
                           ),
                         )
                       : ListView.separated(
-                          padding: const EdgeInsets.fromLTRB(24, 32, 24, 40),
+                          padding: const EdgeInsets.fromLTRB(24, 32, 24, 120), // Increased bottom padding to 120
                           physics: const BouncingScrollPhysics(),
                           itemCount: theRest.length,
                           separatorBuilder: (_, __) => const SizedBox(height: 12),
