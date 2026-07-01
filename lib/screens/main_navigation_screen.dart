@@ -46,8 +46,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     final colorScheme = Theme.of(context).colorScheme;
     
     return Container(
-      height: 75, // Reduced height from 90
-      margin: const EdgeInsets.fromLTRB(16, 0, 16, 24), // Reduced side margins from 24 to 16 to increase width
+      height: 75,
+      margin: const EdgeInsets.fromLTRB(16, 0, 16, 12), // Reduced bottom margin from 24 to 12
       decoration: BoxDecoration(
         color: Colors.transparent,
         borderRadius: BorderRadius.circular(28), // Slightly smaller radius to match new height
