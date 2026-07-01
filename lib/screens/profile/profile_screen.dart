@@ -20,6 +20,7 @@ class ProfileScreen extends StatelessWidget {
     return Scaffold(
       appBar: CustomAppBar(
         title: 'Player Profile',
+        showBackButton: false,
         actions: [
           IconButton(
             onPressed: () => _showLogoutDialog(context, auth),

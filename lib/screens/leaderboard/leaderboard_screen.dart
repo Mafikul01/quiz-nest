@@ -18,7 +18,7 @@ class LeaderboardScreen extends StatelessWidget {
       backgroundColor: colorScheme.primary, 
       appBar: const CustomAppBar(
         title: 'Leaderboard',
-        showBackButton: true,
+        showBackButton: false,
         backgroundColor: Colors.transparent,
         foregroundColor: Colors.white,
       ),
