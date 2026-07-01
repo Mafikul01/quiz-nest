@@ -46,37 +46,37 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     final colorScheme = Theme.of(context).colorScheme;
     
     return Container(
-      height: 90,
-      margin: const EdgeInsets.fromLTRB(24, 0, 24, 24),
+      height: 75, // Reduced height from 90
+      margin: const EdgeInsets.fromLTRB(16, 0, 16, 24), // Reduced side margins from 24 to 16 to increase width
       decoration: BoxDecoration(
         color: Colors.transparent,
-        borderRadius: BorderRadius.circular(32),
+        borderRadius: BorderRadius.circular(28), // Slightly smaller radius to match new height
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 20,
-            offset: const Offset(0, 10),
+            color: Colors.black.withOpacity(0.12),
+            blurRadius: 25,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(32),
+        borderRadius: BorderRadius.circular(28),
         child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+          filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20), // Increased blur for better premium feel
           child: Container(
             decoration: BoxDecoration(
-              color: colorScheme.surface.withOpacity(0.8),
-              borderRadius: BorderRadius.circular(32),
+              color: colorScheme.surface.withOpacity(0.85),
+              borderRadius: BorderRadius.circular(28),
               border: Border.all(
-                color: Colors.white.withOpacity(0.1),
-                width: 1,
+                color: Colors.white.withOpacity(0.15),
+                width: 1.5,
               ),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 _buildNavItem(0, Icons.home_rounded, 'Home'),
-                _buildNavItem(1, Icons.emoji_events_rounded, 'Leaderboard'),
+                _buildNavItem(1, Icons.emoji_events_rounded, 'Ranking'),
                 _buildNavItem(2, Icons.person_rounded, 'Profile'),
               ],
             ),
@@ -93,12 +93,19 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
       onTap: () => _onTabTapped(index),
       behavior: HitTestBehavior.opaque,
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 400),
-        curve: Curves.elasticOut,
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        duration: const Duration(milliseconds: 350),
+        curve: Curves.easeInOut,
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8), // Adjusted vertical padding
         decoration: BoxDecoration(
           gradient: isSelected ? AppTheme.primaryGradient : null,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(18),
+          boxShadow: isSelected ? [
+            BoxShadow(
+              color: AppTheme.primaryStart.withOpacity(0.3),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            )
+          ] : null,
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
