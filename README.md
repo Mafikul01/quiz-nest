@@ -7,61 +7,47 @@ QuizNest is a high-performance, portfolio-quality Flutter application designed f
 ## 🌟 Professional Features & Upgrades
 
 ### 🎨 Intelligent Design System
-- **Dynamic Color Engine**: The app automatically identifies the category and applies a unique color theme (Math → Pink, Biology → Green, etc.) to the entire UI, including cards and header gradients.
-- **Glassmorphic UI**: High-end translucent elements, blurred backgrounds, and subtle elevations inspired by modern design trends.
-- **Hero Motion System**: Seamless "flying" transitions for category images from the grid directly into mission briefings.
+- **Premium Bottom Navigation**: Modern floating glassmorphic bar with smooth transitions and haptic feedback.
+- **Dynamic Color Engine**: The app automatically identifies the category and applies a unique color theme (Math → Pink, Biology → Green, etc.).
+- **Glassmorphic UI**: High-end translucent elements, blurred backgrounds, and subtle elevations.
+- **Hero Motion System**: Seamless "flying" transitions for category images.
 
 ### ⚡ Performance & Reliability
-- **Zero-Flicker Startup**: Integrated an Authorization Guard on the Splash Screen to ensure authenticated users enter the app instantly without ever seeing the login page.
-- **Instant Category Loading**: Implemented background fetching and memory-caching logic. The Home Screen feels 100% instant after the first load.
-- **Atomic Data Safety**: All user progress (XP, High Scores) uses Firestore atomic increments to prevent data corruption during network instability.
+- **Zero-Flicker Startup**: Integrated Authorization Guard ensures authenticated users enter the app instantly.
+- **Instant Category Loading**: Background fetching and memory-caching for a zero-wait experience.
+- **Atomic Data Safety**: Firestore atomic increments prevent data corruption.
 
 ### 🏆 Engagement & Gamification
-- **Royal Leaderboard**: A real-time global ranking system featuring a unique **Lottie Crown Animation** for the world's #1 player.
-- **Review Answers**: A detailed post-quiz breakdown allowing users to inspect their performance, identifying correct and incorrect answers with distinct visual cues.
-- **HD Profile Avatars**: Automatically upgrades low-res Google profile thumbnails to High-Definition (400x400px) versions.
-- **Edit Profile**: Seamless real-time name updates that synchronize across the entire platform instantly.
+- **Royal Leaderboard**: Real-time global ranking with a **Lottie Crown Animation** for the top player.
+- **Review Answers**: Post-quiz breakdown to inspect performance and correct answers.
+- **HD Profile Avatars**: Automatic upgrade of Google profile thumbnails to High-Definition.
+- **Edit Profile**: Real-time display name updates synchronized globally.
 
 ---
 
 ## 📂 Visual Assets Guide
 
 ### 🖼️ Category Images (`assets/images/`)
-The app uses a smart mapping system to match category names to high-quality `.png` assets:
 - `math.png` | `physics.png` | `biology.png` | `chemistry.png` | `general.png` | `information.png`
+- `Logo-google.png`: High-quality Google sign-in asset.
 
 ### 🎬 Lottie Animations (`assets/lottie/`)
 - `Crown.json`: Animates atop the Rank 1 player.
-- `trophy.json`: Celebratory Congrats animation.
-- `confetti.json`: High-score success burst.
-- `loading.json` & `error.json`: Branded system state animations.
+- `trophy.json` | `confetti.json` | `loading.json` | `error.json`
 
 ---
 
 ## ⚙️ Technical Architecture
-
-- **State Management**: Optimized Provider (ChangeNotifier) with granular rebuilds.
-- **Backend**: Firebase Auth (Google) & Cloud Firestore (Real-time Streams).
-- **Networking**: `http` package with robust error handling and timeout protection.
-- **Security**: Strict Firestore rules and persistent authentication state.
+- **Navigation**: Persistent state management using `IndexedStack`.
+- **State Management**: Provider (ChangeNotifier).
+- **Backend**: Firebase Auth & Cloud Firestore.
+- **Networking**: `http` package.
 
 ---
 
 ## 🚀 Setup & Deployment
-
-1.  **Firebase**: Enable Google Auth and Firestore.
-2.  **Config**: Place `google-services.json` in `android/app/`.
-3.  **Dependencies**:
-    ```bash
-    flutter pub get
-    ```
-4.  **Icons**:
-    ```bash
-    flutter pub run flutter_launcher_icons
-    ```
-5.  **Build**:
-    ```bash
-    flutter build apk --split-per-abi
-    ```
+1.  **Dependencies**: `flutter pub get`
+2.  **Icons**: `flutter pub run flutter_launcher_icons`
+3.  **Build**: `flutter build apk --split-per-abi`
 
 **QuizNest is a fully optimized, assignment-compliant, and production-ready application.**
