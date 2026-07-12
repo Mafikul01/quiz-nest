@@ -14,6 +14,7 @@ class QuizProvider extends ChangeNotifier {
   List<QuestionModel> _questions = [];
   QuizState _state = QuizState.initial;
   String _errorMessage = '';
+  String _currentCategoryName = '';
 
   // Quiz progress state
   int _currentQuestionIndex = 0;
@@ -25,6 +26,7 @@ class QuizProvider extends ChangeNotifier {
   List<QuestionModel> get questions => _questions;
   QuizState get state => _state;
   String get errorMessage => _errorMessage;
+  String get currentCategoryName => _currentCategoryName;
   int get currentQuestionIndex => _currentQuestionIndex;
   Map<int, int> get userAnswers => _userAnswers;
   int get score => _score;
@@ -52,12 +54,29 @@ class QuizProvider extends ChangeNotifier {
   }
 
   Future<void> loadQuestions(int categoryId) async {
+    // If it's an AI quiz, we expect questions to be set externally via setAIQuestions
+    if (categoryId == -1) return;
+
     _state = QuizState.loading;
     _questions = [];
     _currentQuestionIndex = 0;
     _userAnswers = {};
     _score = 0;
     _earnedPoints = 0;
+    
+    // Find category name
+    final category = _categories.firstWhere(
+      (c) => c.id == categoryId, 
+      orElse: () => CategoryModel(
+        id: categoryId, 
+        name: 'Quiz', 
+        description: '',
+        createdAt: '',
+        updatedAt: '',
+      ),
+    );
+    _currentCategoryName = category.name;
+
     notifyListeners();
     
     try {
@@ -115,6 +134,18 @@ class QuizProvider extends ChangeNotifier {
     _score = 0;
     _earnedPoints = 0;
     _state = QuizState.initial;
+    notifyListeners();
+  }
+
+  void setAIQuestions(List<QuestionModel> questions, String topic) {
+    _state = QuizState.loading;
+    _questions = questions;
+    _currentQuestionIndex = 0;
+    _userAnswers = {};
+    _score = 0;
+    _earnedPoints = 0;
+    _currentCategoryName = topic;
+    _state = QuizState.loaded;
     notifyListeners();
   }
 }

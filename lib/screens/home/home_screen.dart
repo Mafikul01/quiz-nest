@@ -4,10 +4,14 @@ import '../../core/theme/app_theme.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/quiz_provider.dart';
 import '../../widgets/category_card.dart';
+import '../../widgets/ai_quiz_card.dart';
+import '../../widgets/ai_chat_card.dart';
 import '../../widgets/loading_widget.dart';
 import '../../models/user_model.dart';
 import '../../widgets/error_widget.dart';
 import '../category/category_screen.dart';
+import '../ai_quiz/ai_quiz_setup_screen.dart';
+import '../ai_chat/ai_chat_screen.dart';
 import '../profile/profile_screen.dart';
 import '../leaderboard/leaderboard_screen.dart';
 
@@ -57,21 +61,19 @@ class _HomeScreenState extends State<HomeScreen> {
                   _buildStatsRow(user, colorScheme),
                   const SizedBox(height: 32),
                   _buildLeaderboardBanner(context),
-                  const SizedBox(height: 32), // Reduced from 40 to 32
-                  Text(
-                    'Explore Categories',
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: colorScheme.onSurface,
-                    ),
-                  ),
+                  const SizedBox(height: 40),
+                  _buildSectionHeader(context, '✨ AI FEATURES', 'Premium experience'),
+                  const SizedBox(height: 16),
+                  _buildAISection(context),
+                  const SizedBox(height: 40),
+                  _buildSectionHeader(context, '📚 Quiz Categories', 'Explore subjects'),
                   const SizedBox(height: 16),
                 ],
               ),
             ),
           ),
           _buildCategoriesGrid(),
-          const SliverToBoxAdapter(child: SizedBox(height: 120)), // Increased from 60 to 120
+          const SliverToBoxAdapter(child: SizedBox(height: 120)),
         ],
       ),
     );
@@ -123,7 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               Text(
                 'Good Morning 👋',
-                style: TextStyle(color: colorScheme.onSurface.withOpacity(0.6), fontSize: 13),
+                style: TextStyle(color: colorScheme.onSurface.withValues(alpha: 0.6), fontSize: 13),
               ),
               const SizedBox(height: 6), // Added space between Greeting and Name
               Text(
@@ -142,7 +144,7 @@ class _HomeScreenState extends State<HomeScreen> {
         Container(
           margin: const EdgeInsets.only(right: 16),
           decoration: BoxDecoration(
-            color: colorScheme.surfaceContainerHighest.withOpacity(0.5),
+            color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
             shape: BoxShape.circle,
           ),
           child: IconButton(
@@ -172,9 +174,9 @@ class _HomeScreenState extends State<HomeScreen> {
         clipBehavior: Clip.antiAlias,
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 12),
         decoration: BoxDecoration(
-          color: colorScheme.surfaceContainerHighest.withOpacity(0.4),
+          color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.4),
           borderRadius: BorderRadius.circular(24),
-          border: Border.all(color: colorScheme.outline.withOpacity(0.1)),
+          border: Border.all(color: colorScheme.outline.withValues(alpha: 0.1)),
         ),
         child: Column(
           children: [
@@ -192,7 +194,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Text(
               title,
               style: TextStyle(
-                color: colorScheme.onSurface.withOpacity(0.5),
+                color: colorScheme.onSurface.withValues(alpha: 0.5),
                 fontSize: 11,
                 fontWeight: FontWeight.w500,
               ),
@@ -218,7 +220,7 @@ class _HomeScreenState extends State<HomeScreen> {
           borderRadius: BorderRadius.circular(28),
           boxShadow: [
             BoxShadow(
-              color: AppTheme.primaryStart.withOpacity(0.3),
+              color: AppTheme.primaryStart.withValues(alpha: 0.3),
               blurRadius: 20,
               offset: const Offset(0, 10),
             ),
@@ -229,7 +231,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.2),
+                color: Colors.white.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(16),
               ),
               child: const Icon(Icons.leaderboard_rounded, color: Colors.white, size: 32),
@@ -245,7 +247,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   Text(
                     'See how you rank globally!',
-                    style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 13),
+                    style: TextStyle(color: Colors.white.withValues(alpha: 0.8), fontSize: 13),
                   ),
                 ],
               ),
@@ -264,10 +266,62 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  Widget _buildSectionHeader(BuildContext context, String title, String subtitle) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+            fontWeight: FontWeight.bold,
+            color: colorScheme.onSurface,
+            letterSpacing: -0.5,
+          ),
+        ),
+        const SizedBox(height: 2),
+        Text(
+          subtitle,
+          style: TextStyle(
+            color: colorScheme.onSurface.withValues(alpha: 0.4),
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildAISection(BuildContext context) {
+    return SizedBox(
+      height: 170,
+      child: Row(
+        children: [
+          Expanded(
+            child: AIQuizCard(
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const AIQuizSetupScreen()),
+              ),
+            ),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: AIChatCard(
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const AIChatScreen()),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildCategoriesGrid() {
     return Consumer<QuizProvider>(
       builder: (context, quiz, _) {
-        // Optimized loading: only show full loading if we have no categories yet
         if (quiz.state == QuizState.loading && quiz.categories.isEmpty) {
           return const SliverFillRemaining(child: LoadingWidget());
         }
@@ -292,7 +346,7 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisCount: 2,
               mainAxisSpacing: 16,
               crossAxisSpacing: 16,
-              childAspectRatio: 0.85,
+              childAspectRatio: 0.95,
             ),
             delegate: SliverChildBuilderDelegate(
               (context, index) {

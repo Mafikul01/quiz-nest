@@ -82,9 +82,9 @@ class ResultScreen extends StatelessWidget {
                       child: Container(
                         padding: const EdgeInsets.all(40),
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.1),
+                          color: Colors.white.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(40),
-                          border: Border.all(color: Colors.white.withOpacity(0.2)),
+                          border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
                         ),
                         child: Column(
                           children: [
@@ -104,7 +104,7 @@ class ResultScreen extends StatelessWidget {
                   // Actions
                   CustomButton(
                     text: 'Review Answers',
-                    backgroundColor: Colors.white.withOpacity(0.2),
+                    backgroundColor: Colors.white.withValues(alpha: 0.2),
                     foregroundColor: Colors.white,
                     onPressed: () {
                       Navigator.push(

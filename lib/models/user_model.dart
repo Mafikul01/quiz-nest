@@ -5,6 +5,7 @@ class UserModel {
   final String name;
   final String displayName;
   final String email;
+  final String phoneNumber;
   final String photoUrl;
   final int totalPoints;
   final int totalQuizzes;
@@ -17,6 +18,7 @@ class UserModel {
     required this.name,
     required this.displayName,
     required this.email,
+    this.phoneNumber = '',
     required this.photoUrl,
     required this.totalPoints,
     required this.totalQuizzes,
@@ -40,6 +42,7 @@ class UserModel {
       name: data['name']?.toString() ?? 'Scholar',
       displayName: data['displayName']?.toString() ?? data['name']?.toString() ?? 'Scholar',
       email: data['email']?.toString() ?? '',
+      phoneNumber: data['phoneNumber']?.toString() ?? '',
       photoUrl: data['photoUrl']?.toString() ?? '',
       totalPoints: parseInt(data['totalPoints']),
       totalQuizzes: parseInt(data['totalQuizzes']),
@@ -55,6 +58,7 @@ class UserModel {
       'name': name,
       'displayName': displayName,
       'email': email,
+      'phoneNumber': phoneNumber,
       'photoUrl': photoUrl,
       'totalPoints': totalPoints,
       'totalQuizzes': totalQuizzes,

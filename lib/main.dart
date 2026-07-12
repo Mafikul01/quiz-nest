@@ -1,8 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'core/constants/app_constants.dart';
 import 'core/theme/app_theme.dart';
+import 'providers/ai_chat_provider.dart';
+import 'providers/ai_quiz_provider.dart';
 import 'providers/auth_provider.dart';
 import 'providers/quiz_provider.dart';
 import 'screens/login/login_screen.dart';
@@ -31,6 +34,7 @@ class _QuizNestAppState extends State<QuizNestApp> {
 
   Future<void> _initialize() async {
     await Firebase.initializeApp();
+    await dotenv.load(fileName: ".env");
   }
 
   @override
@@ -56,6 +60,8 @@ class _QuizNestAppState extends State<QuizNestApp> {
           providers: [
             ChangeNotifierProvider(create: (_) => AuthProvider()),
             ChangeNotifierProvider(create: (_) => QuizProvider()),
+            ChangeNotifierProvider(create: (_) => AIQuizProvider()),
+            ChangeNotifierProvider(create: (_) => AIChatProvider()),
           ],
           child: MaterialApp(
             title: 'QuizNest',

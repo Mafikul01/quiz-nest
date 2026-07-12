@@ -7,6 +7,7 @@ import '../../providers/auth_provider.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_app_bar.dart';
 import '../../models/user_model.dart';
+import 'quiz_history_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -32,7 +33,7 @@ class ProfileScreen extends StatelessWidget {
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
-              padding: const EdgeInsets.only(bottom: 120), // Added bottom padding for nav bar
+              padding: const EdgeInsets.only(bottom: 120), 
               child: Column(
                 children: [
                   const SizedBox(height: 20),
@@ -54,6 +55,40 @@ class ProfileScreen extends StatelessWidget {
                         const SizedBox(height: 20),
                         _buildStatsGrid(user, colorScheme),
                         const SizedBox(height: 32),
+                        Text(
+                          'Personal Information',
+                          style: TextStyle(
+                            fontSize: 20, 
+                            fontWeight: FontWeight.bold,
+                            color: colorScheme.onSurface,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        _buildMenuTile(
+                          context, 
+                          Icons.phone_rounded, 
+                          'Phone Number', 
+                          user?.phoneNumber != null && user!.phoneNumber.isNotEmpty ? user.phoneNumber : 'Not set',
+                          onTap: () => _showEditPhoneDialog(context, auth, user?.phoneNumber ?? ''),
+                        ),
+                        const SizedBox(height: 32),
+                        Text(
+                          'Activities',
+                          style: TextStyle(
+                            fontSize: 20, 
+                            fontWeight: FontWeight.bold,
+                            color: colorScheme.onSurface,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        _buildMenuTile(
+                          context, 
+                          Icons.history_rounded, 
+                          'Quiz History', 
+                          'View your past performances',
+                          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const QuizHistoryScreen())),
+                        ),
+                        const SizedBox(height: 24),
                         Text(
                           'App Settings',
                           style: TextStyle(
@@ -91,15 +126,15 @@ class ProfileScreen extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            colorScheme.primary.withOpacity(0.1),
-            colorScheme.primary.withOpacity(0.02),
+            colorScheme.primary.withValues(alpha: 0.1),
+            colorScheme.primary.withValues(alpha: 0.02),
           ],
         ),
         borderRadius: BorderRadius.circular(32),
-        border: Border.all(color: colorScheme.primary.withOpacity(0.1)),
+        border: Border.all(color: colorScheme.primary.withValues(alpha: 0.1)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
+            color: Colors.black.withValues(alpha: 0.03),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -107,7 +142,6 @@ class ProfileScreen extends StatelessWidget {
       ),
       child: Column(
         children: [
-          // PRO-PIC (Upload removed as per user request)
           Hero(
             tag: 'profile_pic',
             child: Container(
@@ -135,7 +169,7 @@ class ProfileScreen extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 24, 
                   fontWeight: FontWeight.bold, 
-                  color: colorSurface(colorScheme)
+                  color: colorScheme.onSurface
                 ),
               ),
               const SizedBox(width: 8),
@@ -149,7 +183,7 @@ class ProfileScreen extends StatelessWidget {
           Text(
             user?.email ?? 'anonymous@quiznest.com',
             style: TextStyle(
-              color: colorScheme.onSurface.withOpacity(0.5), 
+              color: colorScheme.onSurface.withValues(alpha: 0.5), 
               fontSize: 14
             ),
           ),
@@ -157,7 +191,7 @@ class ProfileScreen extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: BoxDecoration(
-              color: colorScheme.primary.withOpacity(0.1),
+              color: colorScheme.primary.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(20),
             ),
             child: Text(
@@ -174,8 +208,6 @@ class ProfileScreen extends StatelessWidget {
       ),
     );
   }
-
-  Color colorSurface(ColorScheme colorScheme) => colorScheme.onSurface;
 
   Widget _buildStatsGrid(UserModel? user, ColorScheme colorScheme) {
     return GridView.count(
@@ -201,10 +233,10 @@ class ProfileScreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: colorScheme.surface,
         borderRadius: BorderRadius.circular(28),
-        border: Border.all(color: colorScheme.outline.withOpacity(0.08)),
+        border: Border.all(color: colorScheme.outline.withValues(alpha: 0.08)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.02), 
+            color: Colors.black.withValues(alpha: 0.02), 
             blurRadius: 10, 
             offset: const Offset(0, 4)
           )
@@ -226,7 +258,7 @@ class ProfileScreen extends StatelessWidget {
           Text(
             title.toUpperCase(), 
             style: TextStyle(
-              color: colorScheme.onSurface.withOpacity(0.4), 
+              color: colorScheme.onSurface.withValues(alpha: 0.4), 
               fontSize: 9, 
               fontWeight: FontWeight.bold, 
               letterSpacing: 0.5
@@ -237,14 +269,14 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildMenuTile(BuildContext context, IconData icon, String title, String subtitle) {
+  Widget _buildMenuTile(BuildContext context, IconData icon, String title, String subtitle, {VoidCallback? onTap}) {
     final colorScheme = Theme.of(context).colorScheme;
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
         color: colorScheme.surface,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: colorScheme.outline.withOpacity(0.05)),
+        border: Border.all(color: colorScheme.outline.withValues(alpha: 0.05)),
       ),
       child: Material(
         color: Colors.transparent,
@@ -255,7 +287,7 @@ class ProfileScreen extends StatelessWidget {
           leading: Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: colorScheme.primary.withOpacity(0.05), 
+              color: colorScheme.primary.withValues(alpha: 0.05), 
               shape: BoxShape.circle
             ),
             child: Icon(icon, color: colorScheme.primary, size: 20),
@@ -271,15 +303,15 @@ class ProfileScreen extends StatelessWidget {
           subtitle: Text(
             subtitle, 
             style: TextStyle(
-              color: colorScheme.onSurface.withOpacity(0.4), 
+              color: colorScheme.onSurface.withValues(alpha: 0.4), 
               fontSize: 12
             )
           ),
           trailing: Icon(
             Icons.chevron_right_rounded, 
-            color: colorScheme.onSurface.withOpacity(0.2)
+            color: colorScheme.onSurface.withValues(alpha: 0.2)
           ),
-          onTap: () {},
+          onTap: onTap,
         ),
       ),
     );
@@ -298,7 +330,7 @@ class ProfileScreen extends StatelessWidget {
             onPressed: () => Navigator.pop(context), 
             child: Text(
               'CANCEL', 
-              style: TextStyle(color: colorScheme.onSurface.withOpacity(0.5))
+              style: TextStyle(color: colorScheme.onSurface.withValues(alpha: 0.5))
             )
           ),
           TextButton(
@@ -338,7 +370,7 @@ class ProfileScreen extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('CANCEL', style: TextStyle(color: colorScheme.onSurface.withOpacity(0.5))),
+            child: Text('CANCEL', style: TextStyle(color: colorScheme.onSurface.withValues(alpha: 0.5))),
           ),
           TextButton(
             onPressed: () async {
@@ -358,6 +390,56 @@ class ProfileScreen extends StatelessWidget {
                       SnackBar(content: Text('Failed to update name: $e'), backgroundColor: colorScheme.error),
                     );
                   }
+                }
+              }
+            },
+            child: const Text('SAVE', style: TextStyle(fontWeight: FontWeight.bold)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showEditPhoneDialog(BuildContext context, AuthProvider auth, String currentPhone) {
+    final controller = TextEditingController(text: currentPhone);
+    final colorScheme = Theme.of(context).colorScheme;
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Edit Phone Number'),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
+        content: TextField(
+          controller: controller,
+          decoration: InputDecoration(
+            hintText: 'Enter phone number',
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
+            prefixIcon: const Icon(Icons.phone_rounded),
+          ),
+          autofocus: true,
+          keyboardType: TextInputType.phone,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('CANCEL', style: TextStyle(color: colorScheme.onSurface.withValues(alpha: 0.5))),
+          ),
+          TextButton(
+            onPressed: () async {
+              final newPhone = controller.text.trim();
+              Navigator.pop(context);
+              try {
+                await auth.updatePhone(newPhone);
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Phone number updated successfully!')),
+                  );
+                }
+              } catch (e) {
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Failed to update phone: $e'), backgroundColor: colorScheme.error),
+                  );
                 }
               }
             },

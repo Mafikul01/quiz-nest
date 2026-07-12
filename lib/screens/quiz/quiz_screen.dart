@@ -1,4 +1,6 @@
 import 'dart:async';
+import '../../models/question_model.dart';
+import '../../models/quiz_history_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../providers/auth_provider.dart';
@@ -11,7 +13,9 @@ import '../result/result_screen.dart';
 
 class QuizScreen extends StatefulWidget {
   final int categoryId;
-  const QuizScreen({super.key, required this.categoryId});
+  final List<QuestionModel>? aiQuestions;
+  final String? topic;
+  const QuizScreen({super.key, required this.categoryId, this.aiQuestions, this.topic});
 
   @override
   State<QuizScreen> createState() => _QuizScreenState();
@@ -21,12 +25,18 @@ class _QuizScreenState extends State<QuizScreen> {
   Timer? _timer;
   int _secondsRemaining = 30;
   bool _isSaving = false;
+  late DateTime _startTime;
 
   @override
   void initState() {
     super.initState();
+    _startTime = DateTime.now();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<QuizProvider>().loadQuestions(widget.categoryId);
+      if (widget.aiQuestions != null) {
+        context.read<QuizProvider>().setAIQuestions(widget.aiQuestions!, widget.topic ?? 'AI Quiz');
+      } else {
+        context.read<QuizProvider>().loadQuestions(widget.categoryId);
+      }
     });
     _startTimer();
   }
@@ -78,6 +88,29 @@ class _QuizScreenState extends State<QuizScreen> {
       if (auth.user != null) {
         // Atomic update in Firestore
         await quiz.submitResultToCloud(auth.user!.uid);
+
+        // Save to Quiz History
+        final duration = DateTime.now().difference(_startTime);
+        final minutes = duration.inMinutes;
+        final seconds = duration.inSeconds % 60;
+        final durationString = '${minutes}m ${seconds}s';
+
+        final history = QuizHistoryModel(
+          id: '', // Will be set by Firestore
+          quizType: widget.aiQuestions != null ? 'AI' : 'API',
+          title: quiz.currentCategoryName,
+          category: quiz.currentCategoryName,
+          score: quiz.score,
+          totalQuestions: quiz.questions.length,
+          correctAnswers: quiz.score,
+          wrongAnswers: quiz.questions.length - quiz.score,
+          percentage: (quiz.score / quiz.questions.length) * 100,
+          date: DateTime.now(),
+          duration: durationString,
+        );
+
+        await auth.dbService.saveQuizHistory(auth.user!.uid, history);
+
         // Refresh local user data stream
         await auth.refreshUserData();
       }
@@ -124,7 +157,13 @@ class _QuizScreenState extends State<QuizScreen> {
               if (quiz.state == QuizState.error) {
                 return CustomErrorWidget(
                   message: quiz.errorMessage, 
-                  onRetry: () => quiz.loadQuestions(widget.categoryId),
+                  onRetry: () {
+                    if (widget.aiQuestions != null) {
+                      context.read<QuizProvider>().setAIQuestions(widget.aiQuestions!, widget.topic ?? 'AI Quiz');
+                    } else {
+                      context.read<QuizProvider>().loadQuestions(widget.categoryId);
+                    }
+                  },
                 );
               }
               
@@ -133,7 +172,7 @@ class _QuizScreenState extends State<QuizScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.sentiment_dissatisfied, size: 64, color: colorScheme.onSurface.withOpacity(0.3)),
+                      Icon(Icons.sentiment_dissatisfied, size: 64, color: colorScheme.onSurface.withValues(alpha: 0.3)),
                       const SizedBox(height: 16),
                       const Text('No questions found.'),
                       const SizedBox(height: 24),
@@ -207,7 +246,7 @@ class _QuizScreenState extends State<QuizScreen> {
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
                     BoxShadow(
-                      color: (_secondsRemaining < 10 ? colorScheme.error : colorScheme.primary).withOpacity(0.3),
+                      color: (_secondsRemaining < 10 ? colorScheme.error : colorScheme.primary).withValues(alpha: 0.3),
                       blurRadius: 8,
                       offset: const Offset(0, 4),
                     ),
@@ -254,9 +293,9 @@ class _QuizScreenState extends State<QuizScreen> {
       width: double.infinity,
       padding: const EdgeInsets.all(32),
       decoration: BoxDecoration(
-        color: colorScheme.surfaceContainerHighest.withOpacity(0.3),
+        color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(32),
-        border: Border.all(color: colorScheme.outline.withOpacity(0.1)),
+        border: Border.all(color: colorScheme.outline.withValues(alpha: 0.1)),
       ),
       child: Text(
         text,
@@ -279,7 +318,7 @@ class _QuizScreenState extends State<QuizScreen> {
       padding: const EdgeInsets.fromLTRB(24, 20, 24, 40),
       decoration: BoxDecoration(
         color: colorScheme.surface,
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 20, offset: const Offset(0, -5))],
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 20, offset: const Offset(0, -5))],
       ),
       child: Row(
         children: [
@@ -300,8 +339,8 @@ class _QuizScreenState extends State<QuizScreen> {
             child: CustomButton(
               text: isLast ? 'Finish Quiz' : 'Next Question',
               onPressed: hasAnswered ? _nextQuestion : () {},
-              backgroundColor: hasAnswered ? null : colorScheme.onSurface.withOpacity(0.1),
-              foregroundColor: hasAnswered ? null : colorScheme.onSurface.withOpacity(0.3),
+              backgroundColor: hasAnswered ? null : colorScheme.onSurface.withValues(alpha: 0.1),
+              foregroundColor: hasAnswered ? null : colorScheme.onSurface.withValues(alpha: 0.3),
             ),
           ),
         ],
@@ -356,11 +395,11 @@ class _OptionCard extends StatelessWidget {
             color: isSelected ? colorScheme.primary : colorScheme.surface,
             borderRadius: BorderRadius.circular(24),
             border: Border.all(
-              color: isSelected ? colorScheme.primary : colorScheme.outline.withOpacity(0.2),
+              color: isSelected ? colorScheme.primary : colorScheme.outline.withValues(alpha: 0.2),
               width: 2,
             ),
             boxShadow: isSelected
-                ? [BoxShadow(color: colorScheme.primary.withOpacity(0.3), blurRadius: 15, offset: const Offset(0, 8))]
+                ? [BoxShadow(color: colorScheme.primary.withValues(alpha: 0.3), blurRadius: 15, offset: const Offset(0, 8))]
                 : [],
           ),
           child: Row(
@@ -382,7 +421,7 @@ class _OptionCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: isSelected ? colorScheme.onPrimary : colorScheme.outline.withOpacity(0.3),
+                    color: isSelected ? colorScheme.onPrimary : colorScheme.outline.withValues(alpha: 0.3),
                     width: 2,
                   ),
                   color: isSelected ? colorScheme.onPrimary : Colors.transparent,

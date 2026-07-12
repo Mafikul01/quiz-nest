@@ -26,9 +26,9 @@ class CategoryCard extends StatelessWidget {
           onTap: onTap,
           child: Ink(
             decoration: BoxDecoration(
-              color: categoryColor.withOpacity(0.08), // Using image-based dynamic color
+              color: categoryColor.withValues(alpha: 0.08), // Using image-based dynamic color
               borderRadius: BorderRadius.circular(32),
-              border: Border.all(color: categoryColor.withOpacity(0.12)),
+              border: Border.all(color: categoryColor.withValues(alpha: 0.12)),
             ),
             child: Stack(
               children: [
@@ -39,7 +39,7 @@ class CategoryCard extends StatelessWidget {
                     width: 80,
                     height: 80,
                     decoration: BoxDecoration(
-                      color: categoryColor.withOpacity(0.05),
+                      color: categoryColor.withValues(alpha: 0.05),
                       shape: BoxShape.circle,
                     ),
                   ),
@@ -56,11 +56,11 @@ class CategoryCard extends StatelessWidget {
                           width: 56, 
                           height: 56, 
                           decoration: BoxDecoration(
-                            color: categoryColor.withOpacity(0.15),
+                            color: categoryColor.withValues(alpha: 0.15),
                             borderRadius: BorderRadius.circular(20),
                             boxShadow: [
                               BoxShadow(
-                                color: categoryColor.withOpacity(0.1),
+                                color: categoryColor.withValues(alpha: 0.1),
                                 blurRadius: 10,
                                 offset: const Offset(0, 4),
                               ),
@@ -103,12 +103,12 @@ class CategoryCard extends StatelessWidget {
                       // Progress/Meta
                       Row(
                         children: [
-                          Icon(Icons.timer_outlined, size: 14, color: colorScheme.onSurface.withOpacity(0.4)),
+                          Icon(Icons.timer_outlined, size: 14, color: colorScheme.onSurface.withValues(alpha: 0.4)),
                           const SizedBox(width: 4),
                           Text(
                             '10 Qs',
                             style: TextStyle(
-                              color: colorScheme.onSurface.withOpacity(0.4),
+                              color: colorScheme.onSurface.withValues(alpha: 0.4),
                               fontSize: 11,
                               fontWeight: FontWeight.w600,
                             ),

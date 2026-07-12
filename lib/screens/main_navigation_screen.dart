@@ -5,6 +5,7 @@ import '../core/theme/app_theme.dart';
 import 'home/home_screen.dart';
 import 'leaderboard/leaderboard_screen.dart';
 import 'profile/profile_screen.dart';
+import 'profile/quiz_history_screen.dart';
 
 class MainNavigationScreen extends StatefulWidget {
   const MainNavigationScreen({super.key});
@@ -19,6 +20,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   final List<Widget> _screens = [
     const HomeScreen(),
     const LeaderboardScreen(),
+    const QuizHistoryScreen(),
     const ProfileScreen(),
   ];
 
@@ -32,15 +34,15 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: _currentIndex == 0,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
         if (_currentIndex != 0) {
           setState(() {
             _currentIndex = 0;
           });
-          return false;
         }
-        return true;
       },
       child: Scaffold(
         extendBody: true, // Crucial for floating glassmorphism effect
@@ -64,7 +66,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         borderRadius: BorderRadius.circular(28), // Slightly smaller radius to match new height
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.12),
+            color: Colors.black.withValues(alpha: 0.12),
             blurRadius: 25,
             offset: const Offset(0, 8),
           ),
@@ -76,10 +78,10 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
           filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20), // Increased blur for better premium feel
           child: Container(
             decoration: BoxDecoration(
-              color: colorScheme.surface.withOpacity(0.85),
+              color: colorScheme.surface.withValues(alpha: 0.85),
               borderRadius: BorderRadius.circular(28),
               border: Border.all(
-                color: Colors.white.withOpacity(0.15),
+                color: Colors.white.withValues(alpha: 0.15),
                 width: 1.5,
               ),
             ),
@@ -88,7 +90,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
               children: [
                 _buildNavItem(0, Icons.home_rounded, 'Home'),
                 _buildNavItem(1, Icons.emoji_events_rounded, 'Ranking'),
-                _buildNavItem(2, Icons.person_rounded, 'Profile'),
+                _buildNavItem(2, Icons.history_rounded, 'History'),
+                _buildNavItem(3, Icons.person_rounded, 'Profile'),
               ],
             ),
           ),
@@ -112,7 +115,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
           borderRadius: BorderRadius.circular(18),
           boxShadow: isSelected ? [
             BoxShadow(
-              color: AppTheme.primaryStart.withOpacity(0.3),
+              color: AppTheme.primaryStart.withValues(alpha: 0.3),
               blurRadius: 10,
               offset: const Offset(0, 4),
             )

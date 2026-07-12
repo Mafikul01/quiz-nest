@@ -32,13 +32,13 @@ class ReviewScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(24),
               border: Border.all(
                 color: isCorrect 
-                    ? Colors.green.withOpacity(0.3) 
-                    : Colors.red.withOpacity(0.3),
+                    ? Colors.green.withValues(alpha: 0.3) 
+                    : Colors.red.withValues(alpha: 0.3),
                 width: 2,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
+                  color: Colors.black.withValues(alpha: 0.05),
                   blurRadius: 10,
                   offset: const Offset(0, 4),
                 ),
@@ -65,7 +65,7 @@ class ReviewScreen extends StatelessWidget {
                         'Question ${index + 1}',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: colorScheme.onSurface.withOpacity(0.5),
+                          color: colorScheme.onSurface.withValues(alpha: 0.5),
                         ),
                       ),
                     ),
@@ -89,11 +89,11 @@ class ReviewScreen extends StatelessWidget {
                   IconData? icon;
 
                   if (isCorrectOption) {
-                    tileColor = Colors.green.withOpacity(0.1);
+                    tileColor = Colors.green.withValues(alpha: 0.1);
                     textColor = Colors.green[700];
                     icon = Icons.check_circle_rounded;
                   } else if (isUserSelected && !isCorrect) {
-                    tileColor = Colors.red.withOpacity(0.1);
+                    tileColor = Colors.red.withValues(alpha: 0.1);
                     textColor = Colors.red[700];
                     icon = Icons.cancel_rounded;
                   }
@@ -102,10 +102,10 @@ class ReviewScreen extends StatelessWidget {
                     margin: const EdgeInsets.only(bottom: 8),
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                     decoration: BoxDecoration(
-                      color: tileColor ?? colorScheme.surfaceVariant.withOpacity(0.3),
+                      color: tileColor ?? colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
-                        color: tileColor?.withOpacity(0.5) ?? Colors.transparent,
+                        color: tileColor?.withValues(alpha: 0.5) ?? Colors.transparent,
                       ),
                     ),
                     child: Row(

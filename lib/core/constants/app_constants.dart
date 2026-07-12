@@ -57,7 +57,7 @@ class AppConstants {
   
   // Assets - Lottie
   static const String trophyLottie = 'assets/lottie/trophy.json';
-  static const String loadingLottie = 'assets/lottie/loading.json';
+  static const String loadingLottie = 'assets/lottie/Nrloading.json';
   static const String errorLottie = 'assets/lottie/error.json';
   static const String confettiLottie = 'assets/lottie/confetti.json';
   static const String loginLottie = 'assets/lottie/login.json';

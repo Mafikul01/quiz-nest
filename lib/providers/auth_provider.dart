@@ -17,6 +17,7 @@ class AuthProvider extends ChangeNotifier {
 
   User? get user => _firebaseUser;
   UserModel? get userData => _userData;
+  DatabaseService get dbService => _dbService;
   bool get isLoading => _isLoading;
   bool get isInitialAuthChecked => _isInitialAuthChecked;
   bool get isAuthenticated => _firebaseUser != null;
@@ -70,6 +71,20 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
     try {
       await _dbService.updateDisplayName(_firebaseUser!.uid, newName);
+    } catch (e) {
+      rethrow;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> updatePhone(String phoneNumber) async {
+    if (_firebaseUser == null) return;
+    _isLoading = true;
+    notifyListeners();
+    try {
+      await _dbService.updatePhoneNumber(_firebaseUser!.uid, phoneNumber);
     } catch (e) {
       rethrow;
     } finally {

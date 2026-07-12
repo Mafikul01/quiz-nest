@@ -67,7 +67,7 @@ class LeaderboardScreen extends StatelessWidget {
                     borderRadius: const BorderRadius.vertical(top: Radius.circular(40)),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.15), 
+                        color: Colors.black.withValues(alpha: 0.15), 
                         blurRadius: 30, 
                         offset: const Offset(0, -10),
                       ),
@@ -77,14 +77,14 @@ class LeaderboardScreen extends StatelessWidget {
                       ? Center(
                           child: Text(
                             'Keep playing to climb the ranks!',
-                            style: TextStyle(color: colorScheme.onSurface.withOpacity(0.5)),
+                            style: TextStyle(color: colorScheme.onSurface.withValues(alpha: 0.5)),
                           ),
                         )
                       : ListView.separated(
                           padding: const EdgeInsets.fromLTRB(24, 32, 24, 120), // Increased bottom padding to 120
                           physics: const BouncingScrollPhysics(),
                           itemCount: theRest.length,
-                          separatorBuilder: (_, __) => const SizedBox(height: 12),
+                          separatorBuilder: (_, index) => const SizedBox(height: 12),
                           itemBuilder: (context, index) {
                             final user = theRest[index];
                             return _buildRankingTile(context, user, index + 4, colorScheme);
@@ -142,7 +142,7 @@ class LeaderboardScreen extends StatelessWidget {
                 shape: BoxShape.circle,
                 border: Border.all(color: crownColor, width: 3),
                 boxShadow: [
-                  BoxShadow(color: crownColor.withOpacity(0.3), blurRadius: 15),
+                  BoxShadow(color: crownColor.withValues(alpha: 0.3), blurRadius: 15),
                 ],
               ),
               child: CircleAvatar(
@@ -197,7 +197,7 @@ class LeaderboardScreen extends StatelessWidget {
         Text(
           '${user.totalPoints} XP',
           style: TextStyle(
-            color: Colors.white.withOpacity(0.8), 
+            color: Colors.white.withValues(alpha: 0.8), 
             fontWeight: FontWeight.bold, 
             fontSize: 11,
           ),
@@ -211,9 +211,9 @@ class LeaderboardScreen extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
-        color: colorScheme.surfaceContainerHighest.withOpacity(0.3),
+        color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: colorScheme.outline.withOpacity(0.05)),
+        border: Border.all(color: colorScheme.outline.withValues(alpha: 0.05)),
       ),
       child: Row(
         children: [
@@ -222,7 +222,7 @@ class LeaderboardScreen extends StatelessWidget {
             child: Text(
               '#$rank',
               style: TextStyle(
-                color: colorScheme.onSurface.withOpacity(0.4), 
+                color: colorScheme.onSurface.withValues(alpha: 0.4), 
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -251,7 +251,7 @@ class LeaderboardScreen extends StatelessWidget {
                 Text(
                   '${user.totalQuizzes} quizzes played', 
                   style: TextStyle(
-                    color: colorScheme.onSurface.withOpacity(0.5), 
+                    color: colorScheme.onSurface.withValues(alpha: 0.5),
                     fontSize: 12,
                   ),
                 ),

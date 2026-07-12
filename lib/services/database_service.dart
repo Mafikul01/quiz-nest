@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import '../models/user_model.dart';
+import '../models/quiz_history_model.dart';
 import '../core/constants/app_constants.dart';
 
 class DatabaseService {
@@ -24,6 +25,33 @@ class DatabaseService {
     });
   }
 
+  // Quiz History
+  Future<void> saveQuizHistory(String uid, QuizHistoryModel history) async {
+    try {
+      await _db
+          .collection(AppConstants.usersCollection)
+          .doc(uid)
+          .collection('quiz_history')
+          .add(history.toMap());
+    } catch (e) {
+      if (kDebugMode) debugPrint('DatabaseService: saveQuizHistory failed: $e');
+    }
+  }
+
+  Stream<List<QuizHistoryModel>> getQuizHistoryStream(String uid) {
+    return _db
+        .collection(AppConstants.usersCollection)
+        .doc(uid)
+        .collection('quiz_history')
+        .orderBy('date', descending: true)
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs
+          .map((doc) => QuizHistoryModel.fromMap({...doc.data(), 'id': doc.id}))
+          .toList();
+    });
+  }
+
   // Create new user if not exists - Optimized with SetOptions
   Future<void> ensureUserExists(UserModel user) async {
     try {
@@ -36,6 +64,7 @@ class DatabaseService {
         'name': user.name,
         'email': user.email,
         'photoUrl': user.photoUrl,
+        'phoneNumber': user.phoneNumber,
         'joinedAt': FieldValue.serverTimestamp(),
       }, SetOptions(merge: true));
       
@@ -64,6 +93,18 @@ class DatabaseService {
       });
     } catch (e) {
       if (kDebugMode) debugPrint('DatabaseService: updateDisplayName failed: $e');
+      rethrow;
+    }
+  }
+
+  // Update phone number
+  Future<void> updatePhoneNumber(String uid, String phoneNumber) async {
+    try {
+      await _db.collection(AppConstants.usersCollection).doc(uid).update({
+        'phoneNumber': phoneNumber,
+      });
+    } catch (e) {
+      if (kDebugMode) debugPrint('DatabaseService: updatePhoneNumber failed: $e');
       rethrow;
     }
   }

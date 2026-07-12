@@ -17,9 +17,9 @@ class CustomErrorWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
 
-    return Padding(
-      padding: const EdgeInsets.all(32.0),
-      child: Center(
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(32.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -49,15 +49,18 @@ class CustomErrorWidget extends StatelessWidget {
               message,
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: colorScheme.onSurface.withOpacity(0.6),
                 fontSize: 14,
+                color: colorScheme.onSurface.withValues(alpha: 0.6),
+                height: 1.5,
               ),
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: 40),
             CustomButton(
-              text: 'Try Again',
+              text: 'Retry',
               onPressed: onRetry,
               width: 200,
+              backgroundColor: colorScheme.error.withValues(alpha: 0.1),
+              foregroundColor: colorScheme.error,
             ),
           ],
         ),

@@ -12,19 +12,22 @@ dependencies:
   cupertino_icons: ^1.0.8
   http: ^1.2.1
   provider: ^6.1.2
-  firebase_core: ^3.11.0
-  firebase_auth: ^5.5.0
-  cloud_firestore: ^5.6.2
+  firebase_core: ^4.11.0
+  firebase_auth: ^6.5.4
+  cloud_firestore: ^6.6.0
   google_sign_in: ^6.2.1
-  google_fonts: ^6.2.1
+  google_fonts: ^8.1.0
   lottie: ^3.1.2
-  intl: ^0.19.0
+  intl: ^0.20.3
+  flutter_dotenv: ^6.0.1
+  shared_preferences: ^2.2.2
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
-  flutter_launcher_icons: ^0.13.1
+  flutter_launcher_icons: ^0.14.4
 
 flutter_launcher_icons:
   android: "launcher_icon"
@@ -36,5 +39,6 @@ flutter:
   uses-material-design: true
 
   assets:
+    - .env
     - assets/images/
     - assets/lottie/
