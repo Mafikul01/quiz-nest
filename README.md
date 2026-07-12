@@ -1,53 +1,72 @@
-# QuizNest - Ultimate Premium Quiz Platform (2026 Production Edition)
+# QuizNest - Ultimate AI-Powered Quiz Ecosystem (2026 Edition)
 
-QuizNest is a high-performance, portfolio-quality Flutter application designed for high-engagement learning. Built with a futuristic **2026 Startup Aesthetic**, it combines real-time cloud synchronization with advanced UI components to deliver a world-class user experience.
-
----
-
-## 🌟 Professional Features & Upgrades
-
-### 🎨 Intelligent Design System
-- **Premium Bottom Navigation**: Modern floating glassmorphic bar with smooth transitions and haptic feedback.
-- **Dynamic Color Engine**: The app automatically identifies the category and applies a unique color theme (Math → Pink, Biology → Green, etc.).
-- **Glassmorphic UI**: High-end translucent elements, blurred backgrounds, and subtle elevations.
-- **Hero Motion System**: Seamless "flying" transitions for category images.
-
-### ⚡ Performance & Reliability
-- **Zero-Flicker Startup**: Integrated Authorization Guard ensures authenticated users enter the app instantly.
-- **Instant Category Loading**: Background fetching and memory-caching for a zero-wait experience.
-- **Atomic Data Safety**: Firestore atomic increments prevent data corruption.
-
-### 🏆 Engagement & Gamification
-- **Royal Leaderboard**: Real-time global ranking with a **Lottie Crown Animation** for the top player.
-- **Review Answers**: Post-quiz breakdown to inspect performance and correct answers.
-- **HD Profile Avatars**: Automatic upgrade of Google profile thumbnails to High-Definition.
-- **Edit Profile**: Real-time display name updates synchronized globally.
+QuizNest is a high-performance, production-grade Flutter application that redefines the learning experience through artificial intelligence. Built with a futuristic **2026 Startup Aesthetic**, it integrates cutting-edge AI generation with real-time cloud synchronization to provide a personalized educational journey.
 
 ---
 
-## 📂 Visual Assets Guide
+## 🚀 Major AI Updates & Features
 
-### 🖼️ Category Images (`assets/images/`)
-- `math.png` | `physics.png` | `biology.png` | `chemistry.png` | `general.png` | `information.png`
-- `Logo-google.png`: High-quality Google sign-in asset.
+### 🧠 Eagle AI - Personal Assistant
+- **Concise Intelligence**: A dedicated chat assistant developed by **Mafikul Islam** to help users with study topics and general knowledge.
+- **Natural Interaction**: Features modern typing indicators and word-by-word streaming effects for a premium "human" feel.
+- **Context Aware**: Remembers the conversation flow and provides specific explanations for quiz-related queries.
 
-### 🎬 Lottie Animations (`assets/lottie/`)
-- `Crown.json`: Animates atop the Rank 1 player.
-- `trophy.json` | `confetti.json` | `loading.json` | `error.json`
+### ✨ AI Smart Quiz Generator (Powered by OpenRouter)
+- **Topic-on-Demand**: Generate exactly 10 high-quality multiple-choice questions about *any* subject instantly.
+- **Fair-Play Engine**: Questions are validated and options are shuffled programmatically in Flutter to ensure zero predictability.
+- **High Resiliency**: Implements a multi-model fallback system (Gemini 2.0 → 1.5 → Mistral) to guarantee generation success even if one API endpoint is down.
+- **Seamless Flow**: AI quizzes integrate directly with the existing timer, scoring, and leaderboard systems.
+
+### 📜 Comprehensive Quiz History
+- **Progress Tracking**: Persistent Firestore storage for every quiz attempt (both AI-generated and standard categories).
+- **Deep Analytics**: Detailed breakdown of score, percentage, correct/wrong answers, and precise duration for each session.
+- **Smart Filtering**: Advanced history screen with search, type-filtering (AI vs. API), and chronological sorting.
 
 ---
 
-## ⚙️ Technical Architecture
-- **Navigation**: Persistent state management using `IndexedStack`.
-- **State Management**: Provider (ChangeNotifier).
-- **Backend**: Firebase Auth & Cloud Firestore.
-- **Networking**: `http` package.
+## 🎨 Design & UI/UX Excellence
+- **Dual-Section Home**: Organized layout separating **✨ AI FEATURES** from **📚 Quiz Categories**.
+- **Fixed Glassmorphism**: Flawless frosted-glass rendering with multi-layer depth on all AI-powered screens.
+- **Premium Animations**: High-fidelity Lottie animations for loading (`Nrloading.json`), success (`trophy.json`), and rank achievements (`Crown.json`).
+- **Modern Navigation**: Floating glassmorphic bottom bar with Haptic feedback and `PopScope` integration.
 
 ---
 
-## 🚀 Setup & Deployment
-1.  **Dependencies**: `flutter pub get`
-2.  **Icons**: `flutter pub run flutter_launcher_icons`
-3.  **Build**: `flutter build apk --split-per-abi`
+## 📂 Technical Architecture
+- **AI Core**: OpenRouter API (OpenAI compatible) for LLM orchestration.
+- **State Management**: Optimized Provider (ChangeNotifier) with minimal rebuild patterns.
+- **Cloud Backend**: Firebase Authentication & Cloud Firestore (sub-collection hierarchy).
+- **Environment Safety**: Secure `.env` configuration via `flutter_dotenv` to prevent API key leaks.
 
-**QuizNest is a fully optimized, assignment-compliant, and production-ready application.**
+---
+
+## ⚙️ Setup & Deployment
+
+### 1. Environment Configuration
+Create a `.env` file in the root directory based on `.env.example`:
+```env
+OPENAI_API_KEY=your_openrouter_api_key_here
+```
+
+### 2. Firestore Security Rules
+Ensure your Firestore rules allow access to the `quiz_history` sub-collection:
+```javascript
+match /users/{userId}/quiz_history/{historyId} {
+  allow read, write: if request.auth != null && request.auth.uid == userId;
+}
+```
+
+### 3. Build Instructions
+1.  **Get Packages**: `flutter pub get`
+2.  **Generate Icons**: `flutter pub run flutter_launcher_icons`
+3.  **Run (Full Restart)**: `flutter run`
+
+---
+
+## 👨‍💻 Developer Credits
+Developed with ❤️ by **Mafikul Islam**
+- **GitHub**: [@Mafikul01](https://github.com/Mafikul01)
+- **Socials**: Facebook, LinkedIn, Instagram: @Mafikul01
+- **Contact**: +8801788302771 (WhatsApp)
+
+**QuizNest is more than an app—it's a vision of the future of digital learning.**
